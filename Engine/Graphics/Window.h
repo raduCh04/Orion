@@ -27,13 +27,14 @@ namespace Orion {
 
             bool Init();
             bool Closed() const;
+
             void Clear() const;
             void Update();
             void GetMouseButton(float& x, float& y) const;
+            void SetColor(float v0, float v1, float v2, float v3) const;
 
             bool IsKeyPressed(uint32_t key) const;
             bool IsMouseButtonPressed(uint32_t button) const;
-
 
             inline uint32_t GetWidth() const { return (m_Width); }
             inline uint32_t GetHeigth() const { return (m_Height); }
@@ -43,5 +44,6 @@ namespace Orion {
             friend void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
             friend void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
         }; // class Window
+
     } //namespace Graphics
 } // namespace Orion

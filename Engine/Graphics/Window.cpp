@@ -1,4 +1,5 @@
 #include "Window.h"
+#include "Renderer.h"
 
 namespace Orion {
     namespace Graphics {
@@ -82,7 +83,7 @@ namespace Orion {
 
         void Window::Clear() const
         {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
         }
 
         void Window::Update()
@@ -95,6 +96,11 @@ namespace Orion {
         {
             x = m_MouseX;
             y = m_MouseY;
+        }
+
+        void Window::SetColor(float r, float g, float b, float a) const
+        {
+            GLCall(glClearColor(r, g, b, a));
         }
 
         bool Window::IsKeyPressed(uint32_t key) const
@@ -113,5 +119,6 @@ namespace Orion {
             }
             return (false);
         }
-    }
-}
+        
+    } //namespace Graphics
+} //namespace Orion
