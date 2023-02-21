@@ -3,7 +3,12 @@
 namespace Orion {
     namespace Graphics {
 
+        #if defined(__linux__)
         #define ASSERT(x) if (!(x)) raise(SIGTRAP)
+        #endif
+        #if defined(_WIN32)
+        #define ASSERT(x) if (!(x)) __debugbreak();
+        #endif
         #define GLCall(x) GLClearError();\
             x;\
             ASSERT(GLCheckError(#x, __FILE__, __LINE__))

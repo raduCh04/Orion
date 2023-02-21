@@ -23,6 +23,7 @@ if(UNIX)
 endif()
 
 if (MSVC)
-    target_link_libraries(Orion ${CMAKE_CURRENT_SOURCE_DIR}/Deps/Libs/Windows/*.lib)
+    target_link_libraries(Orion ${CMAKE_CURRENT_SOURCE_DIR}/Deps/Libs/Windows/glfw3.lib)
+    add_compile_options(/Zi)
 endif()
 
