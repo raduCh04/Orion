@@ -10,6 +10,8 @@
 #include "Engine/Graphics/IndexBuffer.h"
 #include "Engine/Graphics/VertexArray.h"
 #include "Engine/Graphics/Texture.h"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 int main(int, const char **)
 {
@@ -17,43 +19,38 @@ int main(int, const char **)
     using namespace Graphics;
 
     Window window("Window", 800, 600);
-    window.SetColor(.5f, .3f, .8f, 1.0f);
+    window.SetColor(0.5f, 0.3f, 0.2f, 1.0f);
 
-    float vertices[] = {
-        -0.5f, -0.5f, 0.0f, 0.0f,  // 0
-        0.5f, -0.5f, 1.0f, 0.0f,   // 1
-         0.5f,  0.5f, 1.0f, 1.0f,  // 2
-         -0.5f,  0.5f, 0.0f, 1.0f // 3
+    Renderer renderer(window);
+    renderer.EnableBlending();
+    renderer.EnableDepthTest();
+
+    Shader shaderQuad("../Assets/Shaders/Basic.shader");
+    Shader shaderQuad3D("../Assets/Shaders/3DShader.shader");
+    Texture tex("../Assets/Textures/Andrea.jpg");
+
+    glm::vec3 position = glm::vec3(0, 0, 0);
+
+    glm::vec3 cubePositions[] = {
+        glm::vec3( 0.0f,  0.0f,  0.0f), 
+        glm::vec3( 2.0f,  5.0f, -15.0f), 
+        glm::vec3(-1.5f, -2.2f, -2.5f),  
+        glm::vec3(-3.8f, -2.0f, -12.3f),  
+        glm::vec3( 2.4f, -0.4f, -3.5f),  
+        glm::vec3(-1.7f,  3.0f, -7.5f),  
+        glm::vec3( 1.3f, -2.0f, -2.5f),  
+        glm::vec3( 1.5f,  2.0f, -2.5f), 
+        glm::vec3( 1.5f,  0.2f, -1.5f), 
+        glm::vec3(-1.3f,  1.0f, -1.5f)  
     };
-
-    uint32_t indices[] = {
-        0, 1, 2,
-        2, 3, 0
-    };
-
-    Renderer renderer;
-    Texture texture("../Assets/Textures/tile1.png");
-    texture.Bind();
-
-    VertexArray va;
-    VertexBufferLayout layout;
-    layout.Push(GL_FLOAT, 2);
-    layout.Push(GL_FLOAT, 2);
-    VertexBuffer vb(vertices, sizeof(vertices));
-    va.AddBuffer(vb, layout);
-    IndexBuffer ib(indices, 6);
-    Shader shader("../Assets/Shaders/Vertex.shader", "../Assets/Shaders/Fragment.shader");
-    shader.Enable();
-    shader.SetUniform1i("u_Texture", 0);
-
-    va.Unbind();
-    vb.Unbind();
-    ib.Unbind();
-    //Main loop
+    int i = 0;
     while (!window.Closed())
     {
+
         window.Clear();
-        renderer.Draw(va, ib, shader);
+        Quad3D quad3 = Quad3D(cubePositions[i], glm::vec2(0.5f, 0.5f), glm::vec4(.3f, 0.2f, 0.6f, 1.0f), shaderQuad3D, tex);
+        renderer.Draw3D(quad3);
+        //renderer.Draw3D(quad3);
         window.Update();
     }
     

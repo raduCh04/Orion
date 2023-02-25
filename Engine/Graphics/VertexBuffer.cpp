@@ -8,7 +8,7 @@ namespace Orion {
         {
             GLCall(glGenBuffers(1, &m_BufferID));
             GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_BufferID));
-            glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+            GLCall(glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW));
         }
 
         VertexBuffer::~VertexBuffer()

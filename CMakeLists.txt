@@ -4,10 +4,10 @@ cmake_minimum_required(VERSION 3.20)
 
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
-file(GLOB SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/Engine/*.cpp 
+file(GLOB SOURCES 
     ${CMAKE_CURRENT_SOURCE_DIR}/Engine/Graphics/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/Engine/Maths/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Engine/Vendor/stb_image/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/Engine/Vendor/glm/detail/*.cpp
     )
 
 #add_executable(Orion Main.cpp glad.c ${CMAKE_CURRENT_SOURCE_DIR}/Engine/Graphics/Window.cpp 
@@ -16,7 +16,7 @@ file(GLOB SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/Engine/*.cpp
 #        )
 
 add_executable(Orion Main.cpp glad.c ${SOURCES})
-target_include_directories(Orion PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Deps/Include/)
+target_include_directories(Orion PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Deps/Include/ ${CMAKE_CURRENT_SOURCE_DIR}/Engine/Vendor/)
 
 if(UNIX)
     target_link_libraries(Orion ${CMAKE_CURRENT_SOURCE_DIR}/Deps/Libs/Linux/libglfw3.a)

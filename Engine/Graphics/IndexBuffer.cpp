@@ -5,10 +5,11 @@ namespace Orion {
     namespace Graphics {
 
         IndexBuffer::IndexBuffer(const uint32_t *data, uint32_t count)
+        : m_Count(count), m_IBufferID(0)
         {
             GLCall(glGenBuffers(1, &m_IBufferID));
             GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBufferID));
-            GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), data, GL_STATIC_DRAW));
+            GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(GLuint), data, GL_STATIC_DRAW));
         }
 
         IndexBuffer::~IndexBuffer()

@@ -64,6 +64,7 @@ namespace Orion {
             }
 
             glfwMakeContextCurrent(m_Window);
+            glfwSwapInterval(1);
             glfwSetWindowUserPointer(m_Window, this);
             glfwSetFramebufferSizeCallback(m_Window, window_resize_callback);
             glfwSetKeyCallback(m_Window, key_callback);
