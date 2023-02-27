@@ -10,9 +10,10 @@ namespace Orion {
         private:
             uint32_t m_TexID;
             std::string m_FilePath;
-            u_char* m_LocalBuffer;
+            uint8_t* m_LocalBuffer;
             int m_Width, m_Height, m_BPP;
         public:
+            Texture();
             Texture(const std::string& path);
             ~Texture();
 

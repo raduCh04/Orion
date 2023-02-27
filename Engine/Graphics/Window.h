@@ -38,6 +38,7 @@ namespace Orion {
 
             inline uint32_t GetWidth() const { return (m_Width); }
             inline uint32_t GetHeigth() const { return (m_Height); }
+            inline GLFWwindow *GetWindow() const { return (m_Window); }
         private:
             friend void window_resize_callback(GLFWwindow* window, int width, int height);
             friend void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);

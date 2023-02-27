@@ -12,24 +12,31 @@
 #include "Engine/Graphics/Texture.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
 
 int main(int, const char **)
 {
     using namespace Orion;
     using namespace Graphics;
 
-    Window window("Window", 800, 600);
+    Window window("Window", 1280, 720);
     window.SetColor(0.5f, 0.3f, 0.2f, 1.0f);
 
     Renderer renderer(window);
+
+    ImGui::CreateContext();
+    ImGui_ImplGlfw_InitForOpenGL(window.GetWindow(), true);
+    ImGui_ImplOpenGL3_Init("#version 130");
+    ImGui::StyleColorsDark();
+
     renderer.EnableBlending();
     renderer.EnableDepthTest();
 
-    Shader shaderQuad("../Assets/Shaders/Basic.shader");
-    Shader shaderQuad3D("../Assets/Shaders/3DShader.shader");
-    Texture tex("../Assets/Textures/Andrea.jpg");
-
-    glm::vec3 position = glm::vec3(0, 0, 0);
+    Shader shaderQuad("..//Assets//Shaders//Basic2D.shader");
+    Shader shaderQuad3D("..//Assets//Shaders//Basic3D.shader");
+    Texture tex("..//Assets//Textures//tile1.png");
 
     glm::vec3 cubePositions[] = {
         glm::vec3( 0.0f,  0.0f,  0.0f), 
@@ -43,16 +50,49 @@ int main(int, const char **)
         glm::vec3( 1.5f,  0.2f, -1.5f), 
         glm::vec3(-1.3f,  1.0f, -1.5f)  
     };
-    int i = 0;
+
+    bool show_demo_window = true;
+    bool show_another_window = false;
+    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
     while (!window.Closed())
     {
-
         window.Clear();
-        Quad3D quad3 = Quad3D(cubePositions[i], glm::vec2(0.5f, 0.5f), glm::vec4(.3f, 0.2f, 0.6f, 1.0f), shaderQuad3D, tex);
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+        glm::vec4 quadColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
+
+        static float f = 0.0f;
+        static int counter = 0;
+
+        ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+
+        ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
+        ImGui::Checkbox("Another Window", &show_another_window);           // Edit 1 float using a slider from 0.0f to 1.0f
+        ImGui::ColorEdit3("clear color", (float*)&clear_color); // E      // Edit 1 float using a slider from 0.0f to 1.0f
+        ImGui::SliderFloat("X Position", &cubePositions[0].x, -3.0f, 3.0f);
+        ImGui::SliderFloat("Y Position", &cubePositions[0].y, -3.0f, 3.0f);
+        ImGui::SliderFloat("Z Position", &cubePositions[0].z, -3.0f, 3.0f);
+
+        if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+            counter++;
+        ImGui::SameLine();
+        ImGui::Text("counter = %d", counter);
+
+        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        ImGui::End();
+        Quad3D quad3 = Quad3D(cubePositions[0], glm::vec3(0.5f, 0.5f, 0.5f), shaderQuad3D, quadColor, &tex);
         renderer.Draw3D(quad3);
-        //renderer.Draw3D(quad3);
+        
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         window.Update();
     }
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
     
     return (EXIT_SUCCESS);
 }
