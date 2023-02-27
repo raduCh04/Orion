@@ -20,10 +20,16 @@ namespace Orion {
         void GLClearError();
         bool GLCheckError(const char* function, const char* file, int line);
 
+        #if defined(__linux__)
         #define ASSERT(x) if (!(x)) raise(SIGTRAP)
+        #endif
+        #if defined(_WIN32)
+        #define ASSERT(x) if (!(x)) __debugbreak()
+        #endif
         #define GLCall(x) GLClearError();\
             x;\
             ASSERT(GLCheckError(#x, __FILE__, __LINE__))
+
         class Quad3D;
         class Renderer
         {

@@ -29,7 +29,8 @@ if (MSVC)
 
     add_custom_command(TARGET Orion POST_BUILD COMMAND ${CMAKE_COMMAND} 
         -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Deps/Libs/Windows/Dlls
-        ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+        ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Debug
     )
+    set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT Orion)
 endif()
 

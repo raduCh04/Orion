@@ -92,13 +92,11 @@ namespace Orion {
             
             // CHECK COMPILATION
             int result;
+            char message[512];
             GLCall(glGetShaderiv(shader, GL_COMPILE_STATUS, &result));
             if (!result)
             {
-                int length;
-                GLCall(glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length));
-                char message[length];
-                GLCall(glGetShaderInfoLog(shader, length, &length, message));
+                GLCall(glGetShaderInfoLog(shader, 512, nullptr, message));
                 std::cout << "Failed to compile " << (type == GL_VERTEX_SHADER ? "vertex " : "fragment ") << "shader: " << std::endl;
                 std::cout << message << std::endl;
                 return (0);
